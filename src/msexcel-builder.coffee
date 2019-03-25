@@ -8,7 +8,14 @@ xml = require 'xmlbuilder'
 
 tool =
   i2a : (i) ->
-    return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123'.charAt(i-1)
+    ret = ''
+    a = 1
+    b = 26
+    while (num -= a) >= 0
+      ret = String.fromCharCode(parseInt(num % b / a) + 65) + ret
+      a = b
+      b *= 26
+    ret
 
 opt = 
   tmpl_path : __dirname
@@ -121,7 +128,8 @@ class Sheet
     @styles = {}
 
   set: (col, row, str) ->
-    @data[row][col].v = @book.ss.str2id(''+str) if str? and str isnt ''
+    str = str or ''
+    @data[row][col].v = @book.ss.str2id(''+str) #if str? and str isnt ''
 
   merge: (from_cell, to_cell) ->
     @merges.push({from:from_cell, to:to_cell})
